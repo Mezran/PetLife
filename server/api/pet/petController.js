@@ -2,7 +2,11 @@ import asyncHandler from "../../utils/asyncHandler.js";
 import Pet from "./petModel.js";
 
 // validations
-import { petCreateSchema } from "./petValidation.js";
+import {
+  petCreateValidationSchema,
+  petGetAllValidationSchema,
+  petGetOneValidationSchema,
+} from "./petValidation.js";
 
 // helper functions
 import { sanitizePetReturn, sanitizePetListReturn } from "./petHelpers.js";
@@ -14,7 +18,7 @@ export const petCreate = asyncHandler(async (req, res) => {
     name: req.body.name ? req.body.name : undefined,
   };
 
-  await petCreateSchema.validate(petObj, { abortEarly: false });
+  await petCreateValidationSchema.validate(petObj, { abortEarly: false });
 
   const newPet = new Pet(petObj);
   await newPet.save();
@@ -24,12 +28,22 @@ export const petCreate = asyncHandler(async (req, res) => {
 
 // GET /api/pet/ | List all pets
 export const petGetAll = asyncHandler(async (req, res) => {
+  await petGetAllValidationSchema.validate(
+    { refUser_id: req.user._id },
+    { abortEarly: false }
+  );
   const pets = await Pet.find({ refUser_id: req.user._id });
   res.send({ pets: sanitizePetListReturn(pets) });
 });
 
 // GET /api/pet/:pet_id | Read a pet
 export const petGetOne = asyncHandler(async (req, res) => {
+  // validate user._id and params.pet_id are valid mongoose ObjectIds
+  await petGetOneValidationSchema.validate(
+    { refUser_id: req.user._id, pet_id: req.params.pet_id },
+    { abortEarly: false }
+  );
+
   const pet = await Pet.findOne({ _id: req.params.pet_id, refUser_id: req.user._id });
   if (!pet) throw { name: "CustomError", code: 404, messages: ["Pet not found"] };
 
