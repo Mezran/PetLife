@@ -5,7 +5,7 @@ import Pet from "./petModel.js";
 import { petCreateSchema } from "./petValidation.js";
 
 // helper functions
-import { sanitizePetReturn } from "./petHelpers.js";
+import { sanitizePetReturn, sanitizePetListReturn } from "./petHelpers.js";
 
 // POST /api/pet/ | Create a pet
 export const petCreate = asyncHandler(async (req, res) => {
@@ -23,8 +23,18 @@ export const petCreate = asyncHandler(async (req, res) => {
 });
 
 // GET /api/pet/ | List all pets
+export const petGetAll = asyncHandler(async (req, res) => {
+  const pets = await Pet.find({ refUser_id: req.user._id });
+  res.send({ pets: sanitizePetListReturn(pets) });
+});
 
 // GET /api/pet/:pet_id | Read a pet
+export const petGetOne = asyncHandler(async (req, res) => {
+  const pet = await Pet.findOne({ _id: req.params.pet_id, refUser_id: req.user._id });
+  if (!pet) throw { name: "CustomError", code: 404, messages: ["Pet not found"] };
+
+  res.send({ pet: sanitizePetReturn(pet) });
+});
 
 // PATCH /api/pet/:pet_id | Update a pet
 

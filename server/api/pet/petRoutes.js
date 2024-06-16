@@ -2,8 +2,8 @@ import express from "express";
 import { protectRoute } from "../../utils/protectRoute.js";
 import {
   petCreate,
-  //   petListLite,
-  //   petRead,
+  petGetAll,
+  petGetOne,
   //   petUpdate,
   //   petDelete,
 } from "./petController.js";
@@ -11,8 +11,8 @@ import {
 const petRoutes = express.Router();
 
 petRoutes.post("/", protectRoute, petCreate);
-// petRoutes.get("/", protectRoute, petListLite);
-// petRoutes.get("/:pet_id", protectRoute, petRead);
+petRoutes.get("/", protectRoute, petGetAll);
+petRoutes.get("/:pet_id", protectRoute, petGetOne);
 // petRoutes.patch("/:pet_id", protectRoute, petUpdate);
 // petRoutes.delete("/:pet_id", protectRoute, petDelete);
 
