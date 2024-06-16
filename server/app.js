@@ -11,6 +11,7 @@ import logger from "./services/logger.js";
 // import routes
 import userRoutes from "./api/user/userRoutes.js";
 import testRoutes from "./api/test/testRoutes.js";
+import petRoutes from "./api/pet/petRoutes.js";
 
 // app config
 const app = express();
@@ -56,5 +57,6 @@ if (process.env.NODE_ENV !== "test") {
 // routes
 app.use("/api/user", userRoutes);
 app.use("/api/test", testRoutes);
+app.use("/api/pet", petRoutes);
 
 export default app;
