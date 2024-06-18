@@ -37,7 +37,7 @@ export const petGetOneValidationSchema = yup.object().shape({
     }),
 });
 
-export const petUpdateSchema = yup.object().shape({
+export const petUpdateValidationSchema = yup.object().shape({
   refUser_id: yup
     .string()
     .required()
@@ -51,4 +51,19 @@ export const petUpdateSchema = yup.object().shape({
       return mongoose.Types.ObjectId.isValid(value);
     }),
   name: yup.string().optional(),
+});
+
+export const petDeleteValidationSchema = yup.object().shape({
+  refUser_id: yup
+    .string()
+    .required()
+    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
+      return mongoose.Types.ObjectId.isValid(value);
+    }),
+  pet_id: yup
+    .string()
+    .required()
+    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
+      return mongoose.Types.ObjectId.isValid(value);
+    }),
 });

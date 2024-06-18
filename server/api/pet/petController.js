@@ -6,6 +6,8 @@ import {
   petCreateValidationSchema,
   petGetAllValidationSchema,
   petGetOneValidationSchema,
+  petUpdateValidationSchema,
+  petDeleteValidationSchema,
 } from "./petValidation.js";
 
 // helper functions
@@ -51,5 +53,37 @@ export const petGetOne = asyncHandler(async (req, res) => {
 });
 
 // PATCH /api/pet/:pet_id | Update a pet
+export const petUpdate = asyncHandler(async (req, res) => {
+  const petObj = {
+    refUser_id: req.user._id,
+    pet_id: req.params.pet_id,
+    name: req.body.name ? req.body.name : undefined,
+  };
+
+  await petUpdateValidationSchema.validate(petObj, { abortEarly: false });
+
+  const pet = await Pet.findOneAndUpdate(
+    { _id: req.params.pet_id, refUser_id: req.user._id },
+    petObj,
+    { new: true }
+  );
+  if (!pet) throw { name: "CustomError", code: 404, messages: ["Pet not found"] };
+
+  res.send({ pet: sanitizePetReturn(pet), messages: ["Pet updated"] });
+});
 
 // DELETE /api/pet/:pet_id | Delete a pet
+export const petDelete = asyncHandler(async (req, res) => {
+  await petGetOneValidationSchema.validate(
+    { refUser_id: req.user._id, pet_id: req.params.pet_id },
+    { abortEarly: false }
+  );
+
+  const pet = await Pet.findOneAndDelete({
+    _id: req.params.pet_id,
+    refUser_id: req.user._id,
+  });
+  if (!pet) throw { name: "CustomError", code: 404, messages: ["Pet not found"] };
+
+  res.send({ pet: sanitizePetReturn(pet), messages: ["Pet deleted"] });
+});
