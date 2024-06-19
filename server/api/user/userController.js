@@ -78,7 +78,6 @@ export const userUpdate = asyncHandler(async (req, res) => {
   if (req.body.password) userToUpdate.password = req.body.password;
   if (req.body.passwordCurrent) userToUpdate.passwordCurrent = req.body.passwordCurrent;
 
-  console.log(userToUpdate);
   if (userToUpdate.username == undefined && userToUpdate.password == undefined)
     throw {
       name: "InfoError",

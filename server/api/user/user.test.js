@@ -85,7 +85,7 @@ describe("Server/api/user", () => {
         expect(res.status).toBe(200);
         expect(res.body.messages).toEqual(["User registered"]);
         expect(res.headers["set-cookie"]).toBeDefined();
-        expect(res.headers["set-cookie"][0]).toMatch(/sid=/);
+        expect(res.headers["set-cookie"][0]).toMatch(/sid_petlife=/);
         expect(res.headers["set-cookie"][0]).toMatch(/HttpOnly/);
         // expect(res.headers["set-cookie"][0]).toMatch(/Secure/);
         expect(res.headers["set-cookie"][0]).toMatch(/SameSite=Strict/);
@@ -149,7 +149,7 @@ describe("Server/api/user", () => {
         expect(res.status).toBe(200);
         expect(res.body.messages).toEqual(["Logged in"]);
         expect(res.headers["set-cookie"]).toBeDefined();
-        expect(res.headers["set-cookie"][0]).toMatch(/sid=/);
+        expect(res.headers["set-cookie"][0]).toMatch(/sid_petlife=/);
         expect(res.headers["set-cookie"][0]).toMatch(/HttpOnly/);
         // expect(res.headers["set-cookie"][0]).toMatch(/Secure/);
         expect(res.headers["set-cookie"][0]).toMatch(/SameSite=Strict/);
@@ -251,7 +251,7 @@ describe("Server/api/user", () => {
         expect(res.body.messages).toEqual(["Logged out"]);
         // expect(res.headers["set-cookie"]).toBeDefined();
         // expect session to be cleared
-        expect(res.headers["set-cookie"][0]).toMatch(/sid=/);
+        expect(res.headers["set-cookie"][0]).toMatch(/sid_petlife=/);
       }); // end with session
     }); // end valid data
   }); // end DELETE /api/user/logout
