@@ -60,7 +60,12 @@ const Header = () => {
   if (isLoading || isFetching) return <Box>Loading...</Box>;
   return (
     <>
-      <AppBar color="primary" position="fixed" elevation={4}>
+      <AppBar
+        color="primary"
+        position="fixed"
+        elevation={4}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             {/* Pet Icon */}

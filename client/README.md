@@ -6,3 +6,27 @@ Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+### react page template
+
+```
+// imports
+// Material UI
+// React Router Dom
+// Redux
+// React Hook Form, yup, resolver, and devtool
+// components
+
+// const FileName
+  // local state
+  // React Router Dom
+  // Redux
+  // React Hook Form
+  // - schema
+  // - defaultValues
+  // - const {} = useForm;
+  // onXXSubmit
+  // return () {}
+
+// export default
+```
