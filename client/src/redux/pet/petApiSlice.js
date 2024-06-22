@@ -36,8 +36,8 @@ export const petApiSlice = apiSlice.injectEndpoints({
           // set selectedPet_id to the first pet in the array
           // if there are pets in the array and selectedPet_id is null
           const result = await queryFulfilled;
-          if (getState().pet.selectedPet_id === null && result.data.length > 0) {
-            dispatch(setSelectedPet_id(result.data[0]._id));
+          if (getState().pet.selectedPet_id === null && result.data.pets.length > 0) {
+            dispatch(setSelectedPet_id(result.data.pets[0]._id));
           }
         } catch (error) {
           console.error(error);

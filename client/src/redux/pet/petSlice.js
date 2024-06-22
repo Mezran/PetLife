@@ -12,7 +12,7 @@ const petSlice = createSlice({
   initialState,
   reducers: {
     setSelectedPet_id: (state, action) => {
-      state.selectedPet_id = action.payload.selectedPet_id;
+      state.selectedPet_id = action.payload;
     },
     setSelectedPet_idNull: (state) => {
       state.selectedPet_id = null;

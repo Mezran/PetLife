@@ -15,7 +15,9 @@ import {
 // React Router Dom
 // Redux
 import { useSelector } from "react-redux";
+
 // React Hook Form, yup, resolver, and devtool
+
 // components
 import Sidebar from "./Sidebar";
 
@@ -24,6 +26,7 @@ const PageDashboard = () => {
   // local state
   const drawerWidth = 280;
   const selectedTab = useSelector((state) => state.dashboard.selectedTab);
+  const selectedPet_id = useSelector((state) => state.pet.selectedPet_id);
   // React Router Dom
   // Redux
   // React Hook Form
@@ -41,7 +44,11 @@ const PageDashboard = () => {
           <Paper
             sx={{ maxWidth: 936, minHeight: 600, margin: "auto", overflow: "hidden" }}
           >
-            temp
+            {selectedPet_id ? (
+              <Typography align="center">Pet ID: {selectedPet_id}</Typography>
+            ) : (
+              <Typography align="center">No Pet Selected</Typography>
+            )}
           </Paper>
         </Box>
       </Box>
