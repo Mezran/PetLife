@@ -1,5 +1,4 @@
 // imports
-import { useState, useEffect } from "react";
 // Material UI
 import {
   AppBar,
@@ -14,19 +13,25 @@ import {
 } from "@mui/material";
 // React Router Dom
 // Redux
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedTab } from "../../redux/dashboard/dashboardSlice";
+import { usePetGetOneQuery } from "../../redux/pet/petApiSlice";
 // React Hook Form, yup, resolver, and devtool
 
 // components
 import Sidebar from "./Sidebar";
+import Info from "./info/Info";
 
 // const FileName
 const PageDashboard = () => {
+  const dispatch = useDispatch();
   // local state
   const drawerWidth = 280;
   const selectedTab = useSelector((state) => state.dashboard.selectedTab);
   const selectedPet_id = useSelector((state) => state.pet.selectedPet_id);
+  const { data, error, isLoading, isFetching } = usePetGetOneQuery(selectedPet_id, {
+    skip: selectedPet_id == null,
+  });
   // React Router Dom
   // Redux
   // React Hook Form
@@ -34,6 +39,9 @@ const PageDashboard = () => {
   // - defaultValues
   // - const {} = useForm;
   // onXXSubmit
+  const onTabClicked = (event, tabValue) => {
+    dispatch(setSelectedTab(tabValue));
+  };
   // return () {}
   return (
     <Box display="flex" minHeight="100vh" sx={{ backgroundColor: "#eaeff1" }}>
@@ -44,11 +52,40 @@ const PageDashboard = () => {
           <Paper
             sx={{ maxWidth: 936, minHeight: 600, margin: "auto", overflow: "hidden" }}
           >
-            {selectedPet_id ? (
-              <Typography align="center">Pet ID: {selectedPet_id}</Typography>
-            ) : (
-              <Typography align="center">No Pet Selected</Typography>
-            )}
+            <AppBar
+              component="div"
+              color="transparent"
+              position="static"
+              elevation={1}
+              sx={{ zIndex: 0 }}
+            >
+              <Toolbar>
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item xs>
+                    <Typography color="inherit" variant="h5" component="h1">
+                      {selectedPet_id ? data?.pet.name : "New Pet"}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs />
+                </Grid>
+              </Toolbar>
+            </AppBar>
+            {/* Tab Control */}
+            <Tabs value={selectedTab} onChange={onTabClicked}>
+              <Tab label="Info" value="info" />
+              <Tab label="Tab 2" value="tab2" />
+            </Tabs>
+            <Divider />
+
+            {/* Tab Content */}
+            <Box>
+              <Box p={2} hidden={selectedTab !== "info"}>
+                <Info />
+              </Box>
+              <Box p={2} hidden={selectedTab !== "tab2"}>
+                Tab 2
+              </Box>
+            </Box>
           </Paper>
         </Box>
       </Box>

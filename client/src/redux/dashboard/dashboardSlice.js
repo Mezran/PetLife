@@ -3,7 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  selectedTab: 0,
+  selectedTab: "info",
 };
 
 const dashboardSlice = createSlice({
@@ -11,7 +11,7 @@ const dashboardSlice = createSlice({
   initialState,
   reducers: {
     setSelectedTab: (state, action) => {
-      state.selectedTab = action.payload.selectedTab;
+      state.selectedTab = action.payload;
     },
   },
 });
