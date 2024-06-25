@@ -20,7 +20,7 @@ import { usePetGetOneQuery } from "../../redux/pet/petApiSlice";
 
 // components
 import Sidebar from "./Sidebar";
-import Info from "./info/Info";
+import InfoDemo from "./info/Info";
 
 // const FileName
 const PageDashboard = () => {
@@ -80,7 +80,7 @@ const PageDashboard = () => {
             {/* Tab Content */}
             <Box>
               <Box p={2} hidden={selectedTab !== "info"}>
-                <Info />
+                <InfoDemo />
               </Box>
               <Box p={2} hidden={selectedTab !== "tab2"}>
                 Tab 2
