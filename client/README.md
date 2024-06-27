@@ -14,7 +14,7 @@ Currently, two official plugins are available:
 // Material UI
 // React Router Dom
 // Redux
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 // components
 
 // const FileName

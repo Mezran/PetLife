@@ -25,7 +25,7 @@ import {
 } from "../../../redux/user/userApiSlice";
 import { useSelector } from "react-redux";
 
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

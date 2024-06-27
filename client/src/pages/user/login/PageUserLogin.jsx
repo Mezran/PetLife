@@ -10,7 +10,7 @@ import { Link as RRDLink, useNavigate, Navigate } from "react-router-dom";
 // Redux
 import { useUserLoginMutation } from "../../../redux/user/userApiSlice";
 
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";

@@ -22,7 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setSelectedPet_id } from "../../redux/pet/petSlice";
 import { usePetGetAllQuery } from "../../redux/pet/petApiSlice";
 
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 // components
 
 // const FileName

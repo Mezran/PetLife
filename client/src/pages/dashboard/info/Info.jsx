@@ -19,14 +19,12 @@ import {
 // Redux
 import { useSelector } from "react-redux";
 import { usePetGetOneQuery } from "../../../redux/pet/petApiSlice.js";
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { DevTool } from "@hookform/devtools";
 
 // components
-import CTextField from "../../../components/customMUI/cTextField/CTextField.jsx";
 import FormTextField from "../../../components/forms/FormTextField";
 
 // const FileName
@@ -46,12 +44,12 @@ const Info = () => {
   // - schema
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
-    // age: yup.number().required("Age is required"),
+    age: yup.number().required("Age is required"),
   });
   // - defaultValues
   const defaultValues = {
-    name: "",
-    // age: selectedPet_id != null ? petData?.pet.age : 0,
+    name: petData?.pet.name || "",
+    age: petData?.pet.age || 0,
   };
 
   // - const {} = useForm;
@@ -65,17 +63,26 @@ const Info = () => {
     control,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: defaultValues,
+    values: defaultValues,
+    // defaultValues: defaultValues,
   });
   // onXXSubmit
   const onPetInfoSubmit = (data) => {
     console.log(data);
   };
 
+  const onButtonEditClick = () => {
+    setIsViewState(false);
+  };
+
+  const onButtonCancelClick = () => {
+    reset();
+    setIsViewState(true);
+  };
+
   // return () {}
   return (
     <Box>
-      <DevTool control={control} placement="top-right" />
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <Grid container alignItems="center" spacing={1}>
@@ -86,21 +93,13 @@ const Info = () => {
             </Grid>
             {isViewState ? (
               <Grid item>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => setIsViewState(!isViewState)}
-                >
+                <Button color="primary" variant="contained" onClick={onButtonEditClick}>
                   Edit
                 </Button>
               </Grid>
             ) : (
               <Grid item>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => setIsViewState(!isViewState)}
-                >
+                <Button color="primary" variant="contained" onClick={onButtonCancelClick}>
                   Cancel
                 </Button>
               </Grid>

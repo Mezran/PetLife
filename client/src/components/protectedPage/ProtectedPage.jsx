@@ -6,7 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 // Redux
 import { useSelector } from "react-redux";
 import { useUserGetSessionQuery } from "../../redux/user/userApiSlice";
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 // components
 
 // const FileName

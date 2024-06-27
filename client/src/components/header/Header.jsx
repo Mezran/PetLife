@@ -21,7 +21,7 @@ import {
   useUserGetSessionQuery,
   useUserLogoutMutation,
 } from "../../redux/user/userApiSlice";
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 // components
 
 // const FileName

@@ -16,7 +16,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedTab } from "../../redux/dashboard/dashboardSlice";
 import { usePetGetOneQuery } from "../../redux/pet/petApiSlice";
-// React Hook Form, yup, resolver, and devtool
+// React Hook Form, yup, resolver
 
 // components
 import Sidebar from "./Sidebar";
