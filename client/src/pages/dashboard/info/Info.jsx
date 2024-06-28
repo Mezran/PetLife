@@ -114,7 +114,6 @@ const Info = () => {
           <Grid item xs={6}>
             <FormTextField
               isViewState={isViewState}
-              // data={petData?.pet.name}
               name="name"
               label="Name"
               control={control}
