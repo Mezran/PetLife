@@ -85,12 +85,22 @@ const Info = () => {
                 Pet Info
               </Typography>
             </Grid>
-
             <Grid item>
               <Button
                 color="primary"
                 variant="contained"
-                disabled={!isDirty}
+                disabled={!isDirty || isSubmitting}
+                onClick={handleSubmit(onPetInfoSubmit)}
+              >
+                Save
+              </Button>
+            </Grid>
+
+            <Grid item>
+              <Button
+                color="secondary"
+                variant="contained"
+                disabled={!isDirty || isSubmitting}
                 onClick={onButtonResetClick}
               >
                 Reset
