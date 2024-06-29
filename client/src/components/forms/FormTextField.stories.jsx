@@ -11,35 +11,50 @@ export default {
   },
   tags: ["autodocs"],
   argTypes: {
-    isViewState: {
-      control: "boolean",
-      description: "View State, view or edit",
-    },
     name: {
       control: "text",
       description: "Must be unique. Used internally for react hook form.",
+      default: "nameOfField",
     },
     label: {
       control: "text",
       description: "Label for the input field and display",
+      default: "Text Field",
     },
     required: {
       control: "boolean",
       default: false,
       description: "Is this field required?",
     },
+    disabled: {
+      control: "boolean",
+      default: false,
+      description: "Is this field disabled?",
+    },
+    // storybook controls -- not used in the component
+    SB_Init_Value: {
+      control: "text",
+      description:
+        "Initial value for the text field, does not effect value after initial render",
+      default: "Text Field Value",
+    },
+    SB_GridSize: {
+      control: "number",
+      description: "Grid size for the text field",
+      default: 6,
+    },
   },
   decorators: [
     (Story, { args }) => {
       const formController = useForm({
         defaultValues: {
-          nameOfField: "Value XX",
+          nameOfField: args.SB_Init_Value || "",
         },
       });
       return (
         <FormProvider {...formController}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={args.SB_GridSize || 6}>
               <Story {...args} />
             </Grid>
           </Grid>
@@ -49,20 +64,44 @@ export default {
   ],
 };
 
-export const ViewState = {
+export const Default = {
   args: {
-    isViewState: true,
     name: "nameOfField",
     label: "Text Field",
-    required: false,
   },
 };
 
-export const EditState = {
+export const Required = {
   args: {
-    isViewState: false,
     name: "nameOfField",
     label: "Text Field",
     required: true,
+    SB_Init_Value: "Required Value",
+  },
+};
+
+export const Disabled = {
+  args: {
+    name: "nameOfField",
+    label: "Text Field",
+    disabled: true,
+    SB_Init_Value: "Disabled Value",
+  },
+};
+
+export const Empty = {
+  args: {
+    name: "nameOfField",
+    label: "Text Field",
+    SB_Init_Value: "",
+  },
+};
+
+export const GridSize = {
+  args: {
+    name: "nameOfField",
+    label: "Text Field",
+    SB_Init_Value: "Grid Size Value",
+    SB_GridSize: 12,
   },
 };

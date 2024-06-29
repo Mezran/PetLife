@@ -30,7 +30,6 @@ import FormTextField from "../../../components/forms/FormTextField";
 // const FileName
 const Info = () => {
   // local state
-  const [isViewState, setIsViewState] = React.useState(true);
   // React Router Dom
   // Redux
   const selectedPet_id = useSelector((state) => state.pet.selectedPet_id);
@@ -44,12 +43,12 @@ const Info = () => {
   // - schema
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
-    age: yup.number().required("Age is required"),
+    // age: yup.number().required("Age is required"),
   });
   // - defaultValues
   const defaultValues = {
-    name: petData?.pet.name || "",
-    age: petData?.pet.age || 0,
+    name: selectedPet_id != null && !isFetching ? petData?.pet?.name : "",
+    // age: petData?.pet.age || 0,
   };
 
   // - const {} = useForm;
@@ -71,13 +70,8 @@ const Info = () => {
     console.log(data);
   };
 
-  const onButtonEditClick = () => {
-    setIsViewState(false);
-  };
-
-  const onButtonCancelClick = () => {
+  const onButtonResetClick = () => {
     reset();
-    setIsViewState(true);
   };
 
   // return () {}
@@ -91,19 +85,17 @@ const Info = () => {
                 Pet Info
               </Typography>
             </Grid>
-            {isViewState ? (
-              <Grid item>
-                <Button color="primary" variant="contained" onClick={onButtonEditClick}>
-                  Edit
-                </Button>
-              </Grid>
-            ) : (
-              <Grid item>
-                <Button color="primary" variant="contained" onClick={onButtonCancelClick}>
-                  Cancel
-                </Button>
-              </Grid>
-            )}
+
+            <Grid item>
+              <Button
+                color="primary"
+                variant="contained"
+                disabled={!isDirty}
+                onClick={onButtonResetClick}
+              >
+                Reset
+              </Button>
+            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
@@ -112,13 +104,7 @@ const Info = () => {
       ) : (
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <FormTextField
-              isViewState={isViewState}
-              name="name"
-              label="Name"
-              control={control}
-              required
-            />
+            <FormTextField name="name" label="Name" control={control} required />
           </Grid>
         </Grid>
       )}

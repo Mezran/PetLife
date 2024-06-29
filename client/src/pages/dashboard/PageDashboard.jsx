@@ -72,6 +72,7 @@ const PageDashboard = () => {
             </AppBar>
             {/* Tab Control */}
             <Tabs value={selectedTab} onChange={onTabClicked}>
+              <Tab label="Overview" value="overview" />
               <Tab label="Info" value="info" />
               <Tab label="Tab 2" value="tab2" />
             </Tabs>
@@ -79,6 +80,9 @@ const PageDashboard = () => {
 
             {/* Tab Content */}
             <Box>
+              <Box p={2} hidden={selectedTab !== "overview"}>
+                Overview
+              </Box>
               <Box p={2} hidden={selectedTab !== "info"}>
                 <InfoDemo />
               </Box>
