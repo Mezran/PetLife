@@ -1,7 +1,13 @@
 import * as yup from "yup";
 import mongoose from "mongoose";
 
-export const petCreateValidationSchema = yup.object().shape({
+export const petMongooseObjectId = yup
+  .string()
+  .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
+    return mongoose.Types.ObjectId.isValid(value);
+  });
+
+export const petValidationSchema = yup.object().shape({
   refUser_id: yup
     .string()
     .required()
@@ -9,61 +15,30 @@ export const petCreateValidationSchema = yup.object().shape({
       return mongoose.Types.ObjectId.isValid(value);
     }),
   name: yup.string().required(),
-});
-
-export const petGetAllValidationSchema = yup.object().shape({
-  refUser_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
+  nickName: yup.string().optional(),
+  dateOfBirth: yup
+    .date()
+    .optional()
+    .max(new Date(), "Date of Birth cannot be in the future"),
+  dateOfAdoption: yup
+    .date()
+    .optional()
+    .max(new Date(), "Date of Adoption cannot be in the future")
+    .when("dateOfBirth", (schema) => {
+      yup.ref.dateOfBirth != undefined &&
+        schema.max(dateOfBirth, "Date of Adoption cannot be before Date of Birth");
     }),
-});
-
-export const petGetOneValidationSchema = yup.object().shape({
-  // refUser_id is a mongoose ObjectId
-  refUser_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
-    }),
-  // pet_id is a mongoose ObjectId
-  pet_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
-    }),
-});
-
-export const petUpdateValidationSchema = yup.object().shape({
-  refUser_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
-    }),
-  pet_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
-    }),
-  name: yup.string().optional(),
-});
-
-export const petDeleteValidationSchema = yup.object().shape({
-  refUser_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
-    }),
-  pet_id: yup
-    .string()
-    .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
-      return mongoose.Types.ObjectId.isValid(value);
-    }),
+  gender: yup.string().oneOf(["Unknown", "Male", "Female"]).default("Unknown"),
+  species: yup.string().optional(),
+  breed: yup.string().optional(),
+  color: yup.string().optional(),
+  weight: yup.number().optional(),
+  weightUnit: yup.string().optional().oneOf(["kg", "lb"]),
+  height: yup.number().optional(),
+  heightUnit: yup.string().optional().oneOf(["cm", "in"]),
+  ifFriendly: yup.boolean().optional(),
+  isVeryFriendly: yup.boolean().optional(),
+  isAggressive: yup.boolean().optional(),
+  isVeryAggressive: yup.boolean().optional(),
+  notes: yup.string().optional(),
 });

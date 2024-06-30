@@ -2,27 +2,24 @@ import asyncHandler from "../../utils/asyncHandler.js";
 import Pet from "./petModel.js";
 
 // validations
-import {
-  petCreateValidationSchema,
-  petGetAllValidationSchema,
-  petGetOneValidationSchema,
-  petUpdateValidationSchema,
-  petDeleteValidationSchema,
-} from "./petValidation.js";
+import { petValidationSchema, petMongooseObjectId } from "./petValidation.js";
 
 // helper functions
-import { sanitizePetReturn, sanitizePetListReturn } from "./petHelpers.js";
+import {
+  sanitizePetReturn,
+  sanitizePetListReturn,
+  sanitizePetUserInput,
+} from "./petHelpers.js";
 
 // POST /api/pet/ | Create a pet
 export const petCreate = asyncHandler(async (req, res) => {
-  const petObj = {
-    refUser_id: req.user._id,
-    name: req.body.name ? req.body.name : undefined,
-  };
+  await sanitizePetUserInput(req.body);
 
-  await petCreateValidationSchema.validate(petObj, { abortEarly: false });
+  let newPet = new Pet({ ...req.body });
+  newPet.refUser_id = req.user._id;
 
-  const newPet = new Pet(petObj);
+  await petValidationSchema.validate(newPet, { abortEarly: false });
+
   await newPet.save();
 
   res.send({ pet: sanitizePetReturn(newPet), messages: ["Pet created"] });
