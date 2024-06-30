@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 export const petMongooseObjectId = yup
   .string()
-  .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
+  .test("is-valid-object-id", "${value} is not a valid ObjectId", (value) => {
     return mongoose.Types.ObjectId.isValid(value);
   });
 
@@ -11,7 +11,7 @@ export const petValidationSchema = yup.object().shape({
   refUser_id: yup
     .string()
     .required()
-    .test("is-valid-object-id", "${path} is not a valid ObjectId", (value) => {
+    .test("is-valid-object-id", "${value} is not a valid ObjectId", (value) => {
       return mongoose.Types.ObjectId.isValid(value);
     }),
   name: yup.string().required(),
