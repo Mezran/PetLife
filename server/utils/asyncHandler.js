@@ -50,9 +50,15 @@ const asyncHandler = (fn) => (req, res, next) => {
         severity: error.severity || "info",
         messages: error.messages,
       });
+    } else if (error.name === "CustomError") {
+      return res.status(error.code || 400).json({
+        severity: error.severity || "error",
+        messages: error.messages,
+      });
     }
     // ! ---- Server Error ----
     else {
+      console.log("HIT");
       return res.status(500).json({ messages: ["Server error"], error: error });
     }
   });

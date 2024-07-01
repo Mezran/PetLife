@@ -20,10 +20,16 @@ export const sanitizePetListReturn = (pets) => {
 export const sanitizePetUserInput = (pet) => {
   const petValidationSchema = Pet.schema.obj;
   // remove all properties not in the PetModel.js schema
+  // throw error if the user passes 3 invalid properties
+  let invalidFieldsCount = 0;
   const keys = Object.keys(pet);
   for (let key of keys) {
     if (!petValidationSchema[key]) {
       delete pet[key];
+      invalidFieldsCount++;
+      if (invalidFieldsCount >= 3) {
+        throw { name: "CustomError", code: 400, messages: ["Too many invalid fields"] };
+      }
     }
   }
 };

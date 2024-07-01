@@ -65,7 +65,7 @@ export const petUpdate = asyncHandler(async (req, res) => {
 
 // DELETE /api/pet/:pet_id | Delete a pet
 export const petDelete = asyncHandler(async (req, res) => {
-  petMongooseObjectId.validate(req.params.pet_id, { abortEarly: false });
+  await petMongooseObjectId.validate(req.params.pet_id, { abortEarly: false });
 
   const pet = await Pet.findOneAndDelete({
     _id: req.params.pet_id,

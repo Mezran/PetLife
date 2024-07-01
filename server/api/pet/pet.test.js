@@ -78,6 +78,7 @@ describe("server/api/pet", () => {
 
   // ! POST /api/pet/ (method: petCreate)
   describe("POST /api/pet/", () => {
+    // invalid data
     describe("invalid data", () => {
       test("no session: should return 401", async () => {
         const res = await request(app).post("/api/pet/");
@@ -97,16 +98,62 @@ describe("server/api/pet", () => {
           .send({ name: "" });
         expect(res.statusCode).toBe(400);
       });
-    }); // end invalid data
-    describe("valid data", () => {
-      let petCreateObject = { name: "petTest" };
-      test("should return 200 and cleaned pet object", async () => {
+      test("pass 3 invalid fields: should return 400", async () => {
         const res = await request(app)
           .post("/api/pet/")
           .set("Cookie", user1.cookie)
-          .send(petCreateObject);
+          .send({
+            name: "petTest",
+            invalid1: "invalid1",
+            invalid2: "invalid2",
+            invalid3: "invalid3",
+          });
+        console.log(res.body);
+        console.log(res.statusCode);
+        expect(res.statusCode).toBe(400);
+      });
+    }); // end invalid data
+    // valid data
+    describe("valid data", () => {
+      let petCreate1 = { name: "petTest1" };
+      let petCreate2 = {
+        // based on petModel.js
+        name: "petTest2Name",
+        nickName: "petTest2Nick",
+        dateOfBirth: "2021-01-02T00:00:00.000Z",
+        dateOfAdoption: "2021-01-12T00:00:00.000Z",
+        gender: "Male",
+        species: "Dog",
+        breed: "Golden Retriever",
+        color: "Golden",
+        weight: 50,
+        weightUnit: "lb",
+        height: 24,
+        heightUnit: "in",
+        isFriendly: true,
+        isVeryFriendly: true,
+        isAggressive: false,
+        isVeryAggressive: false,
+        notes: "petTest2Notes",
+      };
+
+      test("required fields only: should return 200 and cleaned pet object", async () => {
+        const res = await request(app)
+          .post("/api/pet/")
+          .set("Cookie", user1.cookie)
+          .send(petCreate1);
         expect(res.statusCode).toBe(200);
-        expect(res.body.pet.name).toBe(petCreateObject.name);
+        expect(res.body.pet.name).toBe(petCreate1.name);
+        expect(res.body.pet.refUser_id).toBeUndefined();
+      });
+      test("all fields: should return 200 and cleaned pet object", async () => {
+        const res = await request(app)
+          .post("/api/pet/")
+          .set("Cookie", user1.cookie)
+          .send(petCreate2);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.pet).toMatchObject(petCreate2);
+
         expect(res.body.pet.refUser_id).toBeUndefined();
       });
     }); // end valid data
@@ -177,9 +224,22 @@ describe("server/api/pet", () => {
         const res = await request(app).patch("/api/pet/1").set("Cookie", user1.cookie);
         expect(res.statusCode).toBe(400);
       });
+      test("pass 3 invalid fields: should return 400", async () => {
+        const res = await request(app)
+          .patch("/api/pet/1")
+          .set("Cookie", user1.cookie)
+          .send({
+            invalid1: "invalid1",
+            invalid2: "invalid2",
+            invalid3: "invalid3",
+          });
+        expect(res.statusCode).toBe(400);
+      });
     }); // end invalid data
     describe("valid data", () => {
       let petUpdate1;
+      let petUpdateObj1;
+      let petUpdateObj2;
       beforeAll(async () => {
         petUpdate1 = {
           pet_id: null,
@@ -189,17 +249,49 @@ describe("server/api/pet", () => {
           },
         };
 
+        petUpdateObj1 = {
+          name: "petUpdateTest1Name",
+        };
+        petUpdateObj2 = {
+          name: "petUpdateTest2Name",
+          nickName: "petUpdateTest2Nick",
+          dateOfBirth: "2021-01-02T00:00:00.000Z",
+          dateOfAdoption: "2021-01-03T00:00:00.000Z",
+          gender: "Female",
+          species: "Cat",
+          breed: "Siamese",
+          color: "White",
+          weight: 10,
+          weightUnit: "lb",
+          height: 12,
+          heightUnit: "in",
+          isFriendly: true,
+          isVeryFriendly: true,
+          isAggressive: false,
+          isVeryAggressive: false,
+          notes: "petUpdateTest2Notes",
+        };
         const pet = new Pet(petUpdate1.petObject);
         await pet.save();
         petUpdate1.pet_id = pet._id;
       });
-      test("should return 200 and pet object", async () => {
+      test("required fields only: should return 200 and sanitized pet object", async () => {
         const res = await request(app)
           .patch(`/api/pet/${petUpdate1.pet_id}`)
           .set("Cookie", user1.cookie)
           .send({ name: "petTestUpdate" });
         expect(res.statusCode).toBe(200);
         expect(res.body.pet.name).toBe("petTestUpdate");
+        expect(res.body.pet.refUser_id).toBeUndefined();
+      });
+      test("all fields: should return 200 and sanitized pet object", async () => {
+        const res = await request(app)
+          .patch(`/api/pet/${petUpdate1.pet_id}`)
+          .set("Cookie", user1.cookie)
+          .send(petUpdateObj2);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.pet).toMatchObject(petUpdateObj2);
+        expect(res.body.pet.refUser_id).toBeUndefined();
       });
     }); // end valid data
   }); // end PATCH /api/pet/:pet_id
