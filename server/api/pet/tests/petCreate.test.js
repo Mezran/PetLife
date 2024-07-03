@@ -99,7 +99,6 @@ describe("server/api/pet/ || POST || petCreate", () => {
       // the returned pet object should not have a refUser_id field
       // delete refUser_id from petCreate2
       delete petCreate2.refUser_id;
-      console.log("petCreate2", petCreate2);
       const response = await request(app)
         .post("/api/pet/")
         .set("Cookie", petCreateUser1.cookie)
@@ -107,7 +106,6 @@ describe("server/api/pet/ || POST || petCreate", () => {
       expect(response.statusCode).toBe(200);
       // expect each field to be present in response
       expect(response.body.pet.refUser_id).toBeUndefined();
-      console.log("petCreate2", petCreate2);
       expect(response.body.pet).toMatchObject(petCreate2);
       // expect refUser_id to be undefined
       expect(response.body.messages).toContain("Pet created");
