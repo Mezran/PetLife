@@ -58,7 +58,6 @@ const asyncHandler = (fn) => (req, res, next) => {
     }
     // ! ---- Server Error ----
     else {
-      console.log("HIT");
       return res.status(500).json({ messages: ["Server error"], error: error });
     }
   });
