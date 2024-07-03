@@ -6,11 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "testOne": "NODE_OPTIONS=--experimental-vm-modules jest api/pet/tests/petDelete.test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
