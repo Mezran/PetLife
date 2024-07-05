@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material"; // React Router Dom
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // Redux
 import { useSelector } from "react-redux";
 import { usePetGetOneQuery } from "../../../redux/pet/petApiSlice.js";
@@ -23,9 +24,13 @@ import { usePetGetOneQuery } from "../../../redux/pet/petApiSlice.js";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { DevTool } from "@hookform/devtools";
+// dayjs
+import dayjs from "dayjs";
 
 // components
-import FormTextField from "../../../components/forms/FormTextField";
+import FormTextField from "../../../components/forms/textField/FormTextField.jsx";
+import FormDatePicker from "../../../components/forms/datePicker/FormDatePicker.jsx";
 
 // const FileName
 const Info = () => {
@@ -43,12 +48,15 @@ const Info = () => {
   // - schema
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
-    // age: yup.number().required("Age is required"),
+    nickName: yup.string(),
+    dateOfBirth: yup.date(),
   });
   // - defaultValues
   const defaultValues = {
     name: selectedPet_id != null && !isFetching ? petData?.pet?.name : "",
-    // age: petData?.pet.age || 0,
+    nickName: selectedPet_id != null && !isFetching ? petData?.pet?.nickName : "",
+    dateOfBirth:
+      selectedPet_id != null && !isFetching ? dayjs(petData?.pet?.dateOfBirth) : null,
   };
 
   // - const {} = useForm;
@@ -62,7 +70,7 @@ const Info = () => {
     control,
   } = useForm({
     resolver: yupResolver(schema),
-    values: defaultValues,
+    defaultValues: defaultValues,
     // defaultValues: defaultValues,
   });
   // onXXSubmit
@@ -74,9 +82,15 @@ const Info = () => {
     reset();
   };
 
+  useEffect(() => {
+    reset(defaultValues);
+  }, [selectedPet_id, petData]);
+
   // return () {}
+  if (isLoading || isFetching) return <Box>Loading...</Box>;
   return (
-    <Box>
+    <Box component="form" noValidate>
+      <DevTool control={control} placement="top-right" />
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <Grid container alignItems="center" spacing={1}>
@@ -115,6 +129,17 @@ const Info = () => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <FormTextField name="name" label="Name" control={control} required />
+          </Grid>
+          <Grid item xs={6}>
+            <FormTextField name="nickName" label="Nick Name" control={control} />
+          </Grid>
+          <Grid item xs={6}>
+            <FormDatePicker
+              name="dateOfBirth"
+              label="Date of Birth"
+              actionBarActions={["today", "clear"]}
+              control={control}
+            />
           </Grid>
         </Grid>
       )}

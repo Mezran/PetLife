@@ -6,6 +6,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 // React Router Dom
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,25 +26,27 @@ import PageDashboard from "./pages/dashboard/PageDashboard";
 function App() {
   return (
     <>
-      <Provider store={store}>
-        <CssBaseline />
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <Header />
-            <Routes>
-              <Route path="/" element={<h1>Home Page</h1>} />
-              <Route path="/user/register" element={<PageUserRegister />} />
-              <Route path="/user/login" element={<PageUserLogin />} />
-              <Route element={<ProtectedPage />}>
-                <Route path="/dashboard" element={<PageDashboard />} />
-                <Route path="/user/profile" element={<PageUserProfile />} />
-              </Route>
-              <Route path="/*" element={<h1>Not Found</h1>} />
-            </Routes>
-            <Popup />
-          </ThemeProvider>
-        </BrowserRouter>
-      </Provider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Provider store={store}>
+          <CssBaseline />
+          <BrowserRouter>
+            <ThemeProvider theme={theme}>
+              <Header />
+              <Routes>
+                <Route path="/" element={<h1>Home Page</h1>} />
+                <Route path="/user/register" element={<PageUserRegister />} />
+                <Route path="/user/login" element={<PageUserLogin />} />
+                <Route element={<ProtectedPage />}>
+                  <Route path="/dashboard" element={<PageDashboard />} />
+                  <Route path="/user/profile" element={<PageUserProfile />} />
+                </Route>
+                <Route path="/*" element={<h1>Not Found</h1>} />
+              </Routes>
+              <Popup />
+            </ThemeProvider>
+          </BrowserRouter>
+        </Provider>
+      </LocalizationProvider>
     </>
   );
 }

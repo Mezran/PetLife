@@ -15,7 +15,6 @@ const FormTextField = ({ name, label, control, ...otherProps }) => {
     <TextField
       margin="normal"
       fullWidth
-      size="small"
       label={label}
       {...field}
       error={fieldState.error}
