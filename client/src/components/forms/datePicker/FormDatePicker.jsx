@@ -19,12 +19,11 @@ const FormDatePicker = ({ name, label, control, actionBarActions, ...otherProps 
         label={label}
         {...RHFController.field}
         slotProps={{
-          inputProps: {
-            textField: {
-              error: !!RHFController.fieldState.error,
-              helperText: RHFController.fieldState.error?.message,
-            },
+          textField: {
+            error: !!RHFController.fieldState.error,
+            helperText: RHFController.fieldState.error?.message,
           },
+
           actionBar: { actions: actionBarActions },
         }}
         {...otherProps}

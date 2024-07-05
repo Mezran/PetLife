@@ -48,8 +48,9 @@ const Info = () => {
   // - schema
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
-    nickName: yup.string(),
-    dateOfBirth: yup.date(),
+    nickName: yup.string().nullable(),
+    dateOfBirth: yup.date().nullable(),
+    dateOfAdoption: yup.date().nullable(),
   });
   // - defaultValues
   const defaultValues = {
@@ -57,6 +58,8 @@ const Info = () => {
     nickName: selectedPet_id != null && !isFetching ? petData?.pet?.nickName : "",
     dateOfBirth:
       selectedPet_id != null && !isFetching ? dayjs(petData?.pet?.dateOfBirth) : null,
+    dateOfAdoption:
+      selectedPet_id != null && !isFetching ? dayjs(petData?.pet?.dateOfAdoption) : null,
   };
 
   // - const {} = useForm;
@@ -137,6 +140,14 @@ const Info = () => {
             <FormDatePicker
               name="dateOfBirth"
               label="Date of Birth"
+              actionBarActions={["today", "clear"]}
+              control={control}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <FormDatePicker
+              name="dateOfAdoption"
+              label="Date of Adoption"
               actionBarActions={["today", "clear"]}
               control={control}
             />
