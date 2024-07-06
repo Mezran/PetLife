@@ -31,6 +31,7 @@ import FormTextField from "../../../components/forms/textField/FormTextField.jsx
 import FormDatePicker from "../../../components/forms/datePicker/FormDatePicker.jsx";
 import FormSelect from "../../../components/forms/select/FormSelect.jsx";
 import FormRadioGroup from "../../../components/forms/radioGroup/FormRadioGroup.jsx";
+import FormCheckbox from "../../../components/forms/checkbox/FormCheckbox.jsx";
 
 // const FileName
 const Info = () => {
@@ -59,6 +60,10 @@ const Info = () => {
     weightUnit: yup.string(),
     height: yup.number().nullable(),
     heightUnit: yup.string(),
+    isFriendly: yup.boolean(),
+    isVeryFriendly: yup.boolean(),
+    isAggressive: yup.boolean(),
+    isVeryAggressive: yup.boolean(),
   });
   // - defaultValues
   const defaultValues = {
@@ -76,6 +81,13 @@ const Info = () => {
     weightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.weightUnit : "lb",
     height: selectedPet_id != null && !isFetching ? petData?.pet?.height : "",
     heightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.heightUnit : "in",
+    isFriendly: selectedPet_id != null && !isFetching ? petData?.pet?.isFriendly : false,
+    isVeryFriendly:
+      selectedPet_id != null && !isFetching ? petData?.pet?.isVeryFriendly : false,
+    isAggressive:
+      selectedPet_id != null && !isFetching ? petData?.pet?.isAggressive : false,
+    isVeryAggressive:
+      selectedPet_id != null && !isFetching ? petData?.pet?.isVeryAggressive : false,
   };
 
   // - const {} = useForm;
@@ -232,6 +244,48 @@ const Info = () => {
                 { value: "cm", label: "cm" },
               ]}
               row
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <FormCheckbox
+              name="isFriendly"
+              label="Is Friendly"
+              control={control}
+              disabled={getValues("isAggressive")}
+              onClick={() => {
+                if (getValues("isFriendly")) {
+                  setValue("isVeryFriendly", false);
+                }
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <FormCheckbox
+              name="isVeryFriendly"
+              label="Is Very Friendly"
+              control={control}
+              disabled={!getValues("isFriendly")}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <FormCheckbox
+              name="isAggressive"
+              label="Is Aggressive"
+              control={control}
+              disabled={getValues("isFriendly")}
+              onClick={() => {
+                if (getValues("isAggressive")) {
+                  setValue("isVeryAggressive", false);
+                }
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <FormCheckbox
+              name="isVeryAggressive"
+              label="Is Very Aggressive"
+              control={control}
+              disabled={!getValues("isAggressive")}
             />
           </Grid>
         </Grid> // Grid container
