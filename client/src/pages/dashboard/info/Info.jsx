@@ -30,6 +30,7 @@ import dayjs from "dayjs";
 import FormTextField from "../../../components/forms/textField/FormTextField.jsx";
 import FormDatePicker from "../../../components/forms/datePicker/FormDatePicker.jsx";
 import FormSelect from "../../../components/forms/select/FormSelect.jsx";
+import FormRadioGroup from "../../../components/forms/radioGroup/FormRadioGroup.jsx";
 
 // const FileName
 const Info = () => {
@@ -140,7 +141,7 @@ const Info = () => {
       {isLoading || isFetching ? (
         <Box>Loading...</Box>
       ) : (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={6}>
             <FormTextField name="name" label="Name" control={control} required />
           </Grid>
@@ -192,6 +193,18 @@ const Info = () => {
               InputProps={{
                 endAdornment: getValues("weightUnit"),
               }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <FormRadioGroup
+              name="weightUnit"
+              label="Weight Unit"
+              control={control}
+              options={[
+                { value: "lb", label: "lb" },
+                { value: "kg", label: "kg" },
+              ]}
+              row
             />
           </Grid>
         </Grid> // Grid container
