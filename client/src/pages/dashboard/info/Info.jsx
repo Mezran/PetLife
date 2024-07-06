@@ -57,6 +57,8 @@ const Info = () => {
     color: yup.string().nullable(),
     weight: yup.number().nullable(),
     weightUnit: yup.string(),
+    height: yup.number().nullable(),
+    heightUnit: yup.string(),
   });
   // - defaultValues
   const defaultValues = {
@@ -72,6 +74,8 @@ const Info = () => {
     color: selectedPet_id != null && !isFetching ? petData?.pet?.color : "",
     weight: selectedPet_id != null && !isFetching ? petData?.pet?.weight : "",
     weightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.weightUnit : "lb",
+    height: selectedPet_id != null && !isFetching ? petData?.pet?.height : "",
+    heightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.heightUnit : "in",
   };
 
   // - const {} = useForm;
@@ -203,6 +207,29 @@ const Info = () => {
               options={[
                 { value: "lb", label: "lb" },
                 { value: "kg", label: "kg" },
+              ]}
+              row
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <FormTextField
+              name="height"
+              label="Height"
+              control={control}
+              InputProps={{
+                endAdornment: getValues("heightUnit"),
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <FormRadioGroup
+              name="heightUnit"
+              label="Height Unit"
+              control={control}
+              options={[
+                { value: "in", label: "in" },
+                { value: "cm", label: "cm" },
               ]}
               row
             />
