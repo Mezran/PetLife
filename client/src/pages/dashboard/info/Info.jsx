@@ -64,6 +64,7 @@ const Info = () => {
     isVeryFriendly: yup.boolean(),
     isAggressive: yup.boolean(),
     isVeryAggressive: yup.boolean(),
+    notes: yup.string().nullable(),
   });
   // - defaultValues
   const defaultValues = {
@@ -88,6 +89,7 @@ const Info = () => {
       selectedPet_id != null && !isFetching ? petData?.pet?.isAggressive : false,
     isVeryAggressive:
       selectedPet_id != null && !isFetching ? petData?.pet?.isVeryAggressive : false,
+    notes: selectedPet_id != null && !isFetching ? petData?.pet?.notes : "",
   };
 
   // - const {} = useForm;
@@ -286,6 +288,15 @@ const Info = () => {
               label="Is Very Aggressive"
               control={control}
               disabled={!getValues("isAggressive")}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormTextField
+              name="notes"
+              label="Notes"
+              control={control}
+              multiline
+              rows={3}
             />
           </Grid>
         </Grid> // Grid container
