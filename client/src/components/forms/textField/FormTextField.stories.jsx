@@ -59,3 +59,16 @@ export const Default = {
     return <Template {...args} />;
   },
 };
+
+export const InputAdornment = {
+  args: {
+    name: "nameOfField",
+    label: "Text Field",
+    InputProps: {
+      endAdornment: "lb",
+    },
+  },
+  render: (args) => {
+    return <Template {...args} />;
+  },
+};

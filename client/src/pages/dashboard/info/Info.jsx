@@ -10,13 +10,11 @@ import {
   Typography,
   Button,
   Stack,
-  InputAdornment,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material"; // React Router Dom
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // Redux
 import { useSelector } from "react-redux";
 import { usePetGetOneQuery } from "../../../redux/pet/petApiSlice.js";
@@ -56,6 +54,8 @@ const Info = () => {
     species: yup.string().nullable(),
     breed: yup.string().nullable(),
     color: yup.string().nullable(),
+    weight: yup.number().nullable(),
+    weightUnit: yup.string(),
   });
   // - defaultValues
   const defaultValues = {
@@ -69,6 +69,8 @@ const Info = () => {
     species: selectedPet_id != null && !isFetching ? petData?.pet?.species : "",
     breed: selectedPet_id != null && !isFetching ? petData?.pet?.breed : "",
     color: selectedPet_id != null && !isFetching ? petData?.pet?.color : "",
+    weight: selectedPet_id != null && !isFetching ? petData?.pet?.weight : "",
+    weightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.weightUnit : "lb",
   };
 
   // - const {} = useForm;
@@ -182,7 +184,17 @@ const Info = () => {
           <Grid item xs={6}>
             <FormTextField name="color" label="Color" control={control} />
           </Grid>
-        </Grid>
+          <Grid item xs={6}>
+            <FormTextField
+              name="weight"
+              label="Weight"
+              control={control}
+              InputProps={{
+                endAdornment: getValues("weightUnit"),
+              }}
+            />
+          </Grid>
+        </Grid> // Grid container
       )}
     </Box>
   );
