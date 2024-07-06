@@ -53,6 +53,9 @@ const Info = () => {
     dateOfBirth: yup.date().nullable(),
     dateOfAdoption: yup.date().nullable(),
     gender: yup.string().oneOf(["Unknown", "Male", "Female"]),
+    species: yup.string().nullable(),
+    breed: yup.string().nullable(),
+    color: yup.string().nullable(),
   });
   // - defaultValues
   const defaultValues = {
@@ -63,6 +66,9 @@ const Info = () => {
     dateOfAdoption:
       selectedPet_id != null && !isFetching ? dayjs(petData?.pet?.dateOfAdoption) : null,
     gender: selectedPet_id != null && !isFetching ? petData?.pet?.gender : "Unknown",
+    species: selectedPet_id != null && !isFetching ? petData?.pet?.species : "",
+    breed: selectedPet_id != null && !isFetching ? petData?.pet?.breed : "",
+    color: selectedPet_id != null && !isFetching ? petData?.pet?.color : "",
   };
 
   // - const {} = useForm;
@@ -166,6 +172,15 @@ const Info = () => {
                 { value: "Female", label: "Female" },
               ]}
             />
+          </Grid>
+          <Grid item xs={6}>
+            <FormTextField name="species" label="Species" control={control} />
+          </Grid>
+          <Grid item xs={6}>
+            <FormTextField name="breed" label="Breed" control={control} />
+          </Grid>
+          <Grid item xs={6}>
+            <FormTextField name="color" label="Color" control={control} />
           </Grid>
         </Grid>
       )}
