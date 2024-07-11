@@ -56,9 +56,15 @@ const Info = () => {
     species: yup.string().nullable(),
     breed: yup.string().nullable(),
     color: yup.string().nullable(),
-    weight: yup.number().nullable(),
+    weight: yup
+      .number()
+      .nullable()
+      .transform((value) => (isNaN(value) ? null : value)),
     weightUnit: yup.string(),
-    height: yup.number().nullable(),
+    height: yup
+      .number()
+      .nullable()
+      .transform((value) => (isNaN(value) ? null : value)),
     heightUnit: yup.string(),
     isFriendly: yup.boolean(),
     isVeryFriendly: yup.boolean(),
