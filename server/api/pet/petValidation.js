@@ -19,10 +19,16 @@ export const petValidationSchema = yup.object().shape({
   dateOfBirth: yup
     .date()
     .optional()
+    .transform((value) => {
+      return value ? new Date(value) : undefined;
+    })
     .max(new Date(), "Date of Birth cannot be in the future"),
   dateOfAdoption: yup
     .date()
     .optional()
+    .transform((value) => {
+      return value ? new Date(value) : undefined;
+    })
     .max(new Date(), "Date of Adoption cannot be in the future")
     .when("dateOfBirth", (schema) => {
       yup.ref.dateOfBirth != undefined &&
@@ -32,9 +38,9 @@ export const petValidationSchema = yup.object().shape({
   species: yup.string().optional(),
   breed: yup.string().optional(),
   color: yup.string().optional(),
-  weight: yup.number().optional(),
+  weight: yup.number().optional().nullable(),
   weightUnit: yup.string().optional().oneOf(["kg", "lb"]),
-  height: yup.number().optional(),
+  height: yup.number().optional().nullable(),
   heightUnit: yup.string().optional().oneOf(["cm", "in"]),
   ifFriendly: yup.boolean().optional(),
   isVeryFriendly: yup.boolean().optional(),

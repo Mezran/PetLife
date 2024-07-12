@@ -10,7 +10,7 @@ export const petApiSlice = apiSlice.injectEndpoints({
     // petCreate
     petCreate: builder.mutation({
       query: (body) => ({
-        url: `${URL_PET}/create`,
+        url: `${URL_PET}/`,
         method: "POST",
         body,
       }),

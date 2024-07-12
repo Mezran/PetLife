@@ -17,8 +17,11 @@ import {
 } from "@mui/material"; // React Router Dom
 // Redux
 import { useSelector } from "react-redux";
-import { usePetGetOneQuery } from "../../../redux/pet/petApiSlice.js";
-// React Hook Form, yup, resolver
+import {
+  usePetGetOneQuery,
+  usePetCreateMutation,
+  usePetUpdateMutation,
+} from "../../../redux/pet/petApiSlice.js"; // React Hook Form, yup, resolver
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -45,6 +48,9 @@ const Info = () => {
     isFetching,
     isError,
   } = usePetGetOneQuery(selectedPet_id, { skip: selectedPet_id === null });
+  const [petCreate] = usePetCreateMutation();
+  const [petUpdate] = usePetUpdateMutation();
+
   // React Hook Form
   // - schema
   const schema = yup.object().shape({
@@ -59,12 +65,12 @@ const Info = () => {
     weight: yup
       .number()
       .nullable()
-      .transform((value) => (isNaN(value) ? null : value)),
+      .transform((value) => (isNaN(value) ? undefined : value)),
     weightUnit: yup.string(),
     height: yup
       .number()
       .nullable()
-      .transform((value) => (isNaN(value) ? null : value)),
+      .transform((value) => (isNaN(value) ? undefined : value)),
     heightUnit: yup.string(),
     isFriendly: yup.boolean(),
     isVeryFriendly: yup.boolean(),
@@ -77,9 +83,13 @@ const Info = () => {
     name: selectedPet_id != null && !isFetching ? petData?.pet?.name : "",
     nickName: selectedPet_id != null && !isFetching ? petData?.pet?.nickName : "",
     dateOfBirth:
-      selectedPet_id != null && !isFetching ? dayjs(petData?.pet?.dateOfBirth) : null,
+      selectedPet_id != null && !isFetching && petData?.pet?.dateOfBirth != null
+        ? dayjs(petData?.pet?.dateOfBirth)
+        : null,
     dateOfAdoption:
-      selectedPet_id != null && !isFetching ? dayjs(petData?.pet?.dateOfAdoption) : null,
+      selectedPet_id != null && !isFetching && petData?.pet?.dateOfAdoption != null
+        ? dayjs(petData?.pet?.dateOfAdoption)
+        : null,
     gender: selectedPet_id != null && !isFetching ? petData?.pet?.gender : "Unknown",
     species: selectedPet_id != null && !isFetching ? petData?.pet?.species : "",
     breed: selectedPet_id != null && !isFetching ? petData?.pet?.breed : "",
@@ -114,7 +124,7 @@ const Info = () => {
   });
   // onXXSubmit
   const onPetInfoSubmit = (data) => {
-    console.log(data);
+    selectedPet_id ? petUpdate({ body: data, pet_id: selectedPet_id }) : petCreate(data);
   };
 
   const onButtonResetClick = () => {
