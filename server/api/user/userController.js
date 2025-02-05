@@ -51,9 +51,19 @@ export const userSession = asyncHandler(async (req, res) => {
   const { user } = req.session;
   if (!user) return res.send({ user: null });
 
-  const sessionUser = sessionizeUser(user);
-  req.session.user = sessionUser;
-  res.send({ user: sessionUser });
+  const userStillExists = await User.findById(user._id);
+  if (!userStillExists) {
+    req.session.destroy((err) => {
+      if (err) throw err;
+      res.clearCookie(process.env.SESS_NAME);
+      res.session = null;
+      res.send({ user: null });
+    });
+  } else {
+    const sessionUser = sessionizeUser(user);
+    req.session.user = sessionUser;
+    res.send({ user: sessionUser });
+  }
 });
 
 // DELETE /api/user/logout

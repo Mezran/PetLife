@@ -2,19 +2,7 @@
 import React, { useEffect } from "react";
 
 // Material UI
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  Grid,
-  Typography,
-  Button,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material"; // React Router Dom
+import { Box, AppBar, Toolbar, Grid, Typography, Button } from "@mui/material"; // React Router Dom
 // Redux
 import { useSelector } from "react-redux";
 import {
@@ -79,33 +67,35 @@ const Info = () => {
     notes: yup.string().nullable(),
   });
   // - defaultValues
+
+  const getDefaultValue = (field, defaultValue = "") => {
+    return selectedPet_id != null && !isFetching
+      ? petData?.pet?.[field] ?? defaultValue
+      : defaultValue;
+  };
+
   const defaultValues = {
-    name: selectedPet_id != null && !isFetching ? petData?.pet?.name : "",
-    nickName: selectedPet_id != null && !isFetching ? petData?.pet?.nickName : "",
-    dateOfBirth:
-      selectedPet_id != null && !isFetching && petData?.pet?.dateOfBirth != null
-        ? dayjs(petData?.pet?.dateOfBirth)
-        : null,
-    dateOfAdoption:
-      selectedPet_id != null && !isFetching && petData?.pet?.dateOfAdoption != null
-        ? dayjs(petData?.pet?.dateOfAdoption)
-        : null,
-    gender: selectedPet_id != null && !isFetching ? petData?.pet?.gender : "Unknown",
-    species: selectedPet_id != null && !isFetching ? petData?.pet?.species : "",
-    breed: selectedPet_id != null && !isFetching ? petData?.pet?.breed : "",
-    color: selectedPet_id != null && !isFetching ? petData?.pet?.color : "",
-    weight: selectedPet_id != null && !isFetching ? petData?.pet?.weight : "",
-    weightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.weightUnit : "lb",
-    height: selectedPet_id != null && !isFetching ? petData?.pet?.height : "",
-    heightUnit: selectedPet_id != null && !isFetching ? petData?.pet?.heightUnit : "in",
-    isFriendly: selectedPet_id != null && !isFetching ? petData?.pet?.isFriendly : false,
-    isVeryFriendly:
-      selectedPet_id != null && !isFetching ? petData?.pet?.isVeryFriendly : false,
-    isAggressive:
-      selectedPet_id != null && !isFetching ? petData?.pet?.isAggressive : false,
-    isVeryAggressive:
-      selectedPet_id != null && !isFetching ? petData?.pet?.isVeryAggressive : false,
-    notes: selectedPet_id != null && !isFetching ? petData?.pet?.notes : "",
+    name: getDefaultValue("name"),
+    nickName: getDefaultValue("nickName"),
+    dateOfBirth: getDefaultValue("dateOfBirth", null)
+      ? dayjs(petData?.pet?.dateOfBirth)
+      : null,
+    dateOfAdoption: getDefaultValue("dateOfAdoption", null)
+      ? dayjs(petData?.pet?.dateOfAdoption)
+      : null,
+    gender: getDefaultValue("gender", "Unknown"),
+    species: getDefaultValue("species"),
+    breed: getDefaultValue("breed"),
+    color: getDefaultValue("color"),
+    weight: getDefaultValue("weight"),
+    weightUnit: getDefaultValue("weightUnit", "lb"),
+    height: getDefaultValue("height"),
+    heightUnit: getDefaultValue("heightUnit", "in"),
+    isFriendly: getDefaultValue("isFriendly", false),
+    isVeryFriendly: getDefaultValue("isVeryFriendly", false),
+    isAggressive: getDefaultValue("isAggressive", false),
+    isVeryAggressive: getDefaultValue("isVeryAggressive", false),
+    notes: getDefaultValue("notes"),
   };
 
   // - const {} = useForm;
@@ -120,7 +110,6 @@ const Info = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: defaultValues,
-    // defaultValues: defaultValues,
   });
   // onXXSubmit
   const onPetInfoSubmit = (data) => {
