@@ -16,7 +16,7 @@ const ProtectedPage = () => {
   const { isLoading, isFetching } = useUserGetSessionQuery();
 
   // return () {}
-  if (isLoading || isFetching) return <Box>Loading...</Box>;
+  if (isLoading || isFetching) return <Box>Loading Page...</Box>;
   return user != null ? <Outlet /> : <Navigate to="/user/login" />;
 };
 // export default

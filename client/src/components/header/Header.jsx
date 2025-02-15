@@ -57,7 +57,6 @@ const Header = () => {
   };
 
   // return () {}
-  if (isLoading || isFetching) return <Box>Loading...</Box>;
   return (
     <>
       <AppBar
@@ -67,49 +66,56 @@ const Header = () => {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
-          <Grid container spacing={1} alignItems="center">
-            {/* Pet Icon */}
-            <Grid item>
-              <PetsIcon />
-            </Grid>
-            {/* Pet Life Title */}
-            <Grid item>
-              <Typography
-                variant="h6"
-                component={RRDLink}
-                to="/"
-                paddingX={2}
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                Home Page
-              </Typography>
-            </Grid>
-            <Grid item>
-              {/* Dashboard Button */}
-              {/* if user is logged in, show the dashboard button */}
-              {user != null && (
-                <Button component={RRDLink} to={"/dashboard"} sx={{ color: "white" }}>
-                  Dashboard
-                </Button>
-              )}
-            </Grid>
+          {isLoading || isFetching ? (
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Loading Header...
+            </Typography>
+          ) : (
+            <Grid container spacing={1} alignItems="center">
+              {/* Pet Icon */}
+              <Grid item>
+                <PetsIcon />
+              </Grid>
 
-            {/* pushes the avatar to the right */}
-            <Grid item xs />
-            {/* User button */}
-            <Grid item>
-              {/* if user is logged in, show the logout button */}
-              {user != null ? (
-                <Button onClick={handleAvatarOnClick}>
-                  <Avatar>{user.username.at(0).toUpperCase()}</Avatar>
-                </Button>
-              ) : (
-                <Button component={RRDLink} to={"/user/login"} sx={{ color: "white" }}>
-                  Login
-                </Button>
-              )}
+              {/* Pet Life Title */}
+              <Grid item>
+                <Typography
+                  variant="h6"
+                  component={RRDLink}
+                  to="/"
+                  paddingX={2}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  Home Page
+                </Typography>
+              </Grid>
+              <Grid item>
+                {/* Dashboard Button */}
+                {/* if user is logged in, show the dashboard button */}
+                {user != null && (
+                  <Button component={RRDLink} to={"/dashboard"} sx={{ color: "white" }}>
+                    Dashboard
+                  </Button>
+                )}
+              </Grid>
+
+              {/* pushes the avatar to the right */}
+              <Grid item xs />
+              {/* User button */}
+              <Grid item>
+                {/* if user is logged in, show the logout button */}
+                {user != null ? (
+                  <Button onClick={handleAvatarOnClick}>
+                    <Avatar>{user.username.at(0).toUpperCase()}</Avatar>
+                  </Button>
+                ) : (
+                  <Button component={RRDLink} to={"/user/login"} sx={{ color: "white" }}>
+                    Login
+                  </Button>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </Toolbar>
         {/* avatar */}
         <Menu

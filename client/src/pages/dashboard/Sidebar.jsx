@@ -81,7 +81,7 @@ const Sidebar = (props) => {
 
         {/* pet list */}
         {isLoading || isFetching ? (
-          <Box>Loading...</Box>
+          <Box>Loading Sidebar...</Box>
         ) : error ? (
           <Box>Error: {error}</Box>
         ) : (
