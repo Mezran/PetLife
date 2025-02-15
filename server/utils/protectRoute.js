@@ -4,25 +4,15 @@ import asyncHandler from "./asyncHandler.js";
 // by sessions
 
 export const protectRoute = asyncHandler(async (req, res, next) => {
-  try {
-    if (!req.session.user) {
-      return res
-        .status(401)
-        .send({ name: "AuthError", messages: ["Unauthorized to access resource"] });
-    }
-    req.user = await User.findOne({
-      username: req.session?.user.username,
-      email: req.session?.user.email,
-    });
-    if (!req.user) {
-      return res
-        .status(401)
-        .send({ name: "AuthError", messages: ["Unauthorized to access resource"] });
-    }
-
-    next();
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ name: "ServerError", messages: ["Server error"] });
+  if (!req.session.user) {
+    return res
+      .status(401)
+      .send({ name: "AuthError", messages: ["Unauthorized to access resource"] });
   }
+  req.user = await User.findOne({
+    username: req.session?.user.username,
+    email: req.session?.user.email,
+  });
+
+  next();
 });
